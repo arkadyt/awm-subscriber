@@ -17,6 +17,30 @@
  * Domain Path: /languages
  */
 
+/* X Works only on /thank-you/ page, which is configured.
+ * -> make it simpler, provide generated route.
+ *
+ * - AWeber API key
+ *
+ * read GET url properties
+ * send AWeber requests
+ *
+ */
+
+class AWM_Subscriber {
+  function activate() {
+
+  }
+
+  function deactivate() {
+
+  }
+
+  function uninstall() {
+
+  }
+}
+
 register_activation_hook(__FILE__, 'awm_subscriber_activate');
 register_deactivation_hook(__FILE__, 'awm_subscriber_deactivate');
 register_uninstall_hook(__FILE__, 'awm_subscriber_uninstall');
