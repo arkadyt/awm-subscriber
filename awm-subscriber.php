@@ -37,10 +37,10 @@ class AWMSubscriber {
     // - thank_you_page_url
     // Don't forget to prefix var names!
 
-    add_action('admin_menu', array($this, 'add_admin_section'));
+    add_action('admin_menu', array($this, 'add_admin_page'));
   }
 
-  function add_admin_section() {
+  public function add_admin_page() {
     add_menu_page(
       'AWeber Multi Subscriber',
       'AWM Subscriber',
