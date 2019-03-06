@@ -21,6 +21,15 @@
  * read GET url properties
  * send AWeber requests
  *
+ * KEYWORDS:
+ * wp_query, 
+ * the loop,
+ * is_page, 
+ * get_query_url,
+ * get_permalink,
+ * 'wp' hook
+ * 'template_redirect' hook
+ *
  */
 
 defined('ABSPATH') or die('Access denied.');
