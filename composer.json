@@ -1,0 +1,14 @@
+{
+    "name": "arkadyt/awm-subscriber",
+    "description": "AWeber Multi Subscriber",
+    "type": "project",
+    "license": "GPL2",
+    "authors": [
+        {
+            "name": "arkadyt",
+            "email": "23281304+arkadyt@users.noreply.github.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
