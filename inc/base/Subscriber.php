@@ -23,6 +23,29 @@ final class Subscriber extends BaseController {
   }
 
   /**
+   * Extracts aweber list id's from the AWeber request url.
+   */
+  public function get_aweber_lists($full_url) {
+    // example AWeber request url (all joined):
+    // ?email=wp-testing%40arkadyt.com&from=wp-testing%40arkadyt.com&meta_adtracking=my%20web%20form&meta_message=1001
+    // &name=Thug&unit=awlist5279237&add_url=http%3A%2F%2Fwp-testing.arkadyt.com%2Fthank-you%2F&add_notes=255.255.255.255
+    // &custom%20awlist5279237=yes&custom%20awlist5000207=yes&custom%20awlist01290129=yes
+
+    // splits url into chunks
+    $parsed_url = parse_url($full_url);
+    // decode query string
+    parse_str($parsed_url['query'], $query_str);
+
+    $aweber_lists = array();
+    foreach ($query_str as $key => $value) {
+      if ($value === 'yes') {
+        $aweber_lists[] = str_replace('custom_', '', $key);
+      }
+    }
+    return $aweber_lists;
+  }
+
+  /**
    * Will try to subscribe user to multiple AWeber lists of his choice
    * once he visits 'confirmation_page_url'.
    *
@@ -32,16 +55,28 @@ final class Subscriber extends BaseController {
    * initial form submission.
    */
   public function subscribe() {
-    global $wp_query;
+    global $wp;
+
+    $current_page_url = $wp->query_vars['pagename'];
     $confirmation_page_url = 'thank-you';
-    if ($wp_query->query['pagename'] === $confirmation_page_url) {
-      echo 'Subscribing user...';
+
+    $full_url = home_url(add_query_arg(array($_GET), $wp->request));
+    $aweber_lists = $this->get_aweber_lists($full_url . '&custom%20awlist5279237=yes&custom%20awlist5000207=yes&custom%20awlist01290129=yes');
+
+    if ($current_page_url === $confirmation_page_url) {
+      echo 'Subscribing user...<br/>';
+      // printf('<pre>%s</pre>', var_export( $current_page_url, true ));
     } else {
       echo 'Doing nothing on this page.';
     }
 
-    // echo 'SSSSSSSSSSSSSSSSSSSSSSSSSSSSSS Visited:' . $wp_query->query['pagename'] . 'ZZZ';
-    // printf('<pre>%s</pre>', var_export( $wp_query, true ));
+    // GET url that long/complicated causes wordpress to shoot 404 back.
+    // What you can do:
+    // - send POST requests from JavaScript (where to get AWeber API key from then? It's supposed to come from MySQL)
+    // - redirect user to the normal version of the thank you page: /thank-you/ (will create loop condition)
+    
+    // Checkboxes field names are supposed to be dynamic. Than means that I can't just teach WP_Query what to look out for.
+    // - parse GET url manually
   }
 }
 
