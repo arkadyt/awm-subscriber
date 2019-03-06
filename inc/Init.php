@@ -13,7 +13,8 @@ final class Init {
   public static function get_services() {
     return array(
       pages\Admin::class,
-      base\SettingsLink::class
+      base\SettingsLink::class,
+      base\Subscriber::class
     );
   }
 

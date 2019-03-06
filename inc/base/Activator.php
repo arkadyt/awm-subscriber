@@ -6,7 +6,7 @@
 namespace inc\base;
 
 final class Activator {
-  public static function execute() {
+  public function register() {
     // setup options with dummy data
     // - API key
     // - Redirect page
