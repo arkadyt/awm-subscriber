@@ -4,11 +4,10 @@
  */
 
 /**
- * Plugin Name: AWeber Multi Subscriber
- * Plugin URI:  https://example.com/plugins/the-basics/
+ * Plugin Name: AWM Subscriber
  * Description: Plugin subscribes a user to multiple AWeber lists once he subscribes to a single list of your choice and confirms the subscription. Learn more on the Settings page.
  * Version:     0.0.0
- * Author:      Andrew Hendrix
+ * Author:      Arkady Titenko
  * Author URI:  http://arkadyt.com
  * License:     GPL2
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -30,19 +29,12 @@ if (file_exists(dirname(__FILE__) . '/vendor/autoload.php')) {
   require_once dirname(__FILE__) . '/vendor/autoload.php';
 }
 
-define('PLUGIN_ROOT', plugin_dir_path(__FILE__));
-define('PLUGIN_URL', plugin_dir_url(__FILE__));
-define('PLUGIN_BASENAME', plugin_basename(__FILE__));
-
-use inc\base\Activator;
-use inc\base\Deactivator;
-
 function activate_awm_subscriber_plugin() {
-  Activator::execute();
+  inc\base\Activator::execute();
 }
 
 function deactivate_awm_subscriber_plugin() {
-  Deactivator::execute();
+  inc\base\Deactivator::execute();
 }
 
 register_activation_hook(__FILE__, 'activate_awm_subscriber_plugin');

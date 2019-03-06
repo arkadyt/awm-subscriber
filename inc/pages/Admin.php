@@ -5,7 +5,9 @@
 
 namespace inc\pages;
 
-final class Admin {
+use \inc\base\BaseController;
+
+final class Admin extends BaseController {
   /**
    * Triggers everything that this class is responsible for.
    * Do not rename the method. inc\Init is expecting to find $this->register() here.
@@ -33,6 +35,6 @@ final class Admin {
    * Returns path to Admin page template.
    */
   public function get_admin_page_template() {
-    require_once PLUGIN_ROOT . 'templates/admin.php';
+    require_once $this->plugin_root . 'templates/admin.php';
   }
 }

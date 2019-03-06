@@ -5,13 +5,15 @@
 
 namespace inc\base;
 
-final class SettingsLink {
+use \inc\base\BaseController;
+
+final class SettingsLink extends BaseController {
   /**
    * Triggers everything that this class is responsible for.
    * Do not rename the method. inc\Init is expecting to find $this->register() here.
    */
   public function register() {
-    add_filter('plugin_action_links_' . PLUGIN_BASENAME, array($this, 'inject_settings_link'));
+    add_filter('plugin_action_links_' . $this->plugin_basename, array($this, 'inject_settings_link'));
   }
 
   /**
