@@ -67,9 +67,8 @@ class AWMSubscriber {
 }
 
 if (class_exists('AWMSubscriber')) {
-  $awmSubscriber = new AWMSubscriber('2PAC IS BAK');
+  $awmSubscriber = new AWMSubscriber();
+  register_activation_hook(__FILE__, array($awmSubscriber, 'activate'));
+  register_deactivation_hook(__FILE__, array($awmSubscriber, 'deactivate'));
+  register_uninstall_hook(__FILE__, array($awmSubscriber, 'uninstall'));
 }
-
-register_activation_hook(__FILE__, array($awmSubscriber, 'awm_subscriber_activate'));
-register_deactivation_hook(__FILE__, array($awmSubscriber, 'awm_subscriber_deactivate'));
-register_uninstall_hook(__FILE__, array($awmSubscriber, 'awm_subscriber_uninstall'));
