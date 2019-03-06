@@ -1,7 +1,6 @@
 <?php
 /**
  * @package awm-subscriber
- * @version 0.0.0
  */
 
 /**
@@ -25,67 +24,30 @@
  *
  */
 
-if (!defined('ABSPATH')) {
-  echo 'WARNING: Attempt to access plugin code outside of Wordpress environment. Access denied.';
-  exit;
+defined('ABSPATH') or die('Access denied.');
+
+if (file_exists(dirname(__FILE__) . '/vendor/autoload.php')) {
+  require_once dirname(__FILE__) . '/vendor/autoload.php';
 }
 
-class AWMSubscriber {
-  public $pluginBasename;
+define('PLUGIN_ROOT', plugin_dir_path(__FILE__));
+define('PLUGIN_URL', plugin_dir_url(__FILE__));
+define('PLUGIN_BASENAME', plugin_basename(__FILE__));
 
-  function __construct() {
-    $this->pluginBasename = plugin_basename(__FILE__);
-  }
+use inc\base\Activator;
+use inc\base\Deactivator;
 
-  public function register() {
-    add_action('admin_menu', array($this, 'add_admin_page'));
-    add_filter("plugin_action_links_$this->pluginBasename", array($this, 'inject_settings_link'));
-  }
-
-  public function inject_settings_link($links) {
-    $settings_link = '<a href="http://localhost:5002/wp-admin/admin.php?page=awm_subscriber">Settings</a>';
-    array_push($links, $settings_link);
-    return $links;
-  }
-
-  public function add_admin_page() {
-    add_menu_page(
-      'AWeber Multi Subscriber',
-      'AWM Subscriber',
-      'manage_options',
-      'awm_subscriber',
-      array($this, 'admin_index'),
-      'dashicons-admin-tools',
-      100
-    );
-  }
-
-  public function admin_index() {
-    require_once plugin_dir_path(__FILE__) . 'pages/settings.php';
-  }
-
-  function activate() {
-    // setup options with dummy values:
-    // - aweber_key
-    // - thank_you_page_url
-    // Don't forget to prefix var names!
-  }
-
-  function deactivate() {
-    // just don't get triggered any more
-    // don't have to do anything for this
-  }
-
-  static function uninstall() {
-    // delete all options from the database
-  }
+function activate_awm_subscriber_plugin() {
+  Activator::execute();
 }
 
-if (class_exists('AWMSubscriber')) {
-  $awmSubscriber = new AWMSubscriber();
-  $awmSubscriber->register();
+function deactivate_awm_subscriber_plugin() {
+  Deactivator::execute();
 }
 
-register_activation_hook(__FILE__, array($awmSubscriber, 'activate'));
-register_deactivation_hook(__FILE__, array($awmSubscriber, 'deactivate'));
-register_uninstall_hook(__FILE__, array($awmSubscriber, 'uninstall'));
+register_activation_hook(__FILE__, 'activate_awm_subscriber_plugin');
+register_deactivation_hook(__FILE__, 'deactivate_awm_subscriber_plugin');
+
+if (class_exists('inc\\Init')) {
+  inc\Init::register_services();
+}

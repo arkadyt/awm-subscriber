@@ -13,7 +13,9 @@
     "require": {},
     "autoload": {
       "psr-4": {
-        "pages\\": "./pages"
+        "inc\\pages\\": "./inc/pages",
+        "inc\\base\\": "./inc/base",
+        "inc\\": "./inc"
       }
     }
 }

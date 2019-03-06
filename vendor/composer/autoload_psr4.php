@@ -6,5 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'pages\\' => array($baseDir . '/pages'),
+    'inc\\pages\\' => array($baseDir . '/inc/pages'),
+    'inc\\base\\' => array($baseDir . '/inc/base'),
+    'inc\\' => array($baseDir . '/inc'),
 );
