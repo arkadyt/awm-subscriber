@@ -31,13 +31,21 @@ if (!defined('ABSPATH')) {
 }
 
 class AWMSubscriber {
-  function activate() {
-    // setup options with dummy values:
-    // - aweber_key
-    // - thank_you_page_url
-    // Don't forget to prefix var names!
+  public $pluginBasename;
 
+  function __construct() {
+    $this->pluginBasename = plugin_basename(__FILE__);
+  }
+
+  public function register() {
     add_action('admin_menu', array($this, 'add_admin_page'));
+    add_filter("plugin_action_links_$this->pluginBasename", array($this, 'inject_settings_link'));
+  }
+
+  public function inject_settings_link($links) {
+    $settings_link = '<a href="http://localhost:5002/wp-admin/admin.php?page=awm_subscriber">Settings</a>';
+    array_push($links, $settings_link);
+    return $links;
   }
 
   public function add_admin_page() {
@@ -53,7 +61,14 @@ class AWMSubscriber {
   }
 
   public function admin_index() {
-    // req template
+    require_once plugin_dir_path(__FILE__) . 'pages/settings.php';
+  }
+
+  function activate() {
+    // setup options with dummy values:
+    // - aweber_key
+    // - thank_you_page_url
+    // Don't forget to prefix var names!
   }
 
   function deactivate() {
@@ -68,7 +83,9 @@ class AWMSubscriber {
 
 if (class_exists('AWMSubscriber')) {
   $awmSubscriber = new AWMSubscriber();
-  register_activation_hook(__FILE__, array($awmSubscriber, 'activate'));
-  register_deactivation_hook(__FILE__, array($awmSubscriber, 'deactivate'));
-  register_uninstall_hook(__FILE__, array($awmSubscriber, 'uninstall'));
+  $awmSubscriber->register();
 }
+
+register_activation_hook(__FILE__, array($awmSubscriber, 'activate'));
+register_deactivation_hook(__FILE__, array($awmSubscriber, 'deactivate'));
+register_uninstall_hook(__FILE__, array($awmSubscriber, 'uninstall'));
