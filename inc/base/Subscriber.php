@@ -38,7 +38,7 @@ final class Subscriber extends BaseController {
 
     $aweber_lists = array();
     foreach ($query_str as $key => $value) {
-      if ($value === 'yes') {
+      if ($value === 'yes' && strpos($key, 'awlist') !== false) {
         $aweber_lists[] = str_replace('custom_', '', $key);
       }
     }
@@ -57,15 +57,15 @@ final class Subscriber extends BaseController {
   public function subscribe() {
     global $wp;
 
-    $current_page_url = $wp->query_vars['pagename'];
-    $confirmation_page_url = 'thank-you';
+    $current_page_slug = $wp->query_vars['pagename'];
+    $confirm_page_slug = 'thank-you';
 
     $full_url = home_url(add_query_arg(array($_GET), $wp->request));
-    $aweber_lists = $this->get_aweber_lists($full_url . '&custom%20awlist5279237=yes&custom%20awlist5000207=yes&custom%20awlist01290129=yes');
+    $aweber_lists = $this->get_aweber_lists($full_url);
 
-    if ($current_page_url === $confirmation_page_url) {
+    if ($current_page_slug === $confirm_page_slug) {
       echo 'Subscribing user...<br/>';
-      // printf('<pre>%s</pre>', var_export( $current_page_url, true ));
+      printf('<pre>%s</pre>', var_export($aweber_lists, true));
     } else {
       echo 'Doing nothing on this page.';
     }
@@ -74,9 +74,6 @@ final class Subscriber extends BaseController {
     // What you can do:
     // - send POST requests from JavaScript (where to get AWeber API key from then? It's supposed to come from MySQL)
     // - redirect user to the normal version of the thank you page: /thank-you/ (will create loop condition)
-    
-    // Checkboxes field names are supposed to be dynamic. Than means that I can't just teach WP_Query what to look out for.
-    // - parse GET url manually
   }
 }
 
