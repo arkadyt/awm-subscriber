@@ -6,11 +6,13 @@
 namespace inc;
 
 final class Init {
+  private static $instances = array();
+
   /**
    * Store all the classes inside an array
    * @return array Full list of classes
    */
-  public static function get_services() {
+  private static function get_services() {
     return array(
       PluginLinks::class,
       pages\Settings::class,
@@ -25,10 +27,19 @@ final class Init {
   public static function register_services() {
     foreach(self::get_services() as $class) {
       $service = self::instantiate($class);
-      if (method_exists($service, 'register')) {
+
+      if (!isset(self::$instances[$class]) && method_exists($service, 'register')) {
+        self::$instances[$class] = $service;
         $service->register();
       }
     }
+  }
+
+  /**
+   * Returns a particular class instance.
+   */
+  public static function get_instance($class) {
+    return self::$instances[$class];
   }
   
   /**
