@@ -13,6 +13,10 @@
 
 namespace inc\base;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Subscriber\Oauth\Oauth1;
+
 /**
  * Core service of this plugin.
  */
@@ -101,11 +105,34 @@ final class Subscriber extends BaseController {
 
     if ($current_page_slug === $confirm_page_slug) {
       echo 'Subscribing user...<br/>';
-      printf('<pre>%s</pre>', var_export($aweber_lists, true));
+      // printf('<pre>%s</pre>', var_export($aweber_lists, true));
       // send post requests
+
     } else {
       echo 'Doing nothing on this page. Checks done: ' . $current_page_slug . ' === ' . $confirm_page_slug;
     }
+  }
+
+  public function load_credentials() {
+    return array(
+      'consumer_key' => get_option('awm_subscriber_consumer_key'),
+      'consumer_secret' => get_option('awm_subscriber_consumer_secret'),
+      'token' => get_option('awm_subscriber_access_token'),
+      'token_secret' => get_option('awm_subscriber_token_secret')
+    );
+  }
+
+  public function send_requests() {
+    $stack = HandlerStack::create();
+    $client = new Client([
+      'base_uri' => 'https://api.aweber.com/1.0/',
+      'handler' => $stack,
+      'auth' => 'oauth'
+    ]);
+
+    $credentials = $this->load_credentials();
+    $request_middleware = new Oauth1($this->load_credentials);
+    $stack->push($request_middleware);
   }
 }
 

@@ -31,6 +31,8 @@
  * 'template_redirect' hook
  * get_template_page_slug
  * template_redirect | template_include hooks
+ * locate_template
+ * wp_redirect (works only on early stage hooks, before headers are sent)
  */
 
 defined('ABSPATH') or die('Access denied.');
