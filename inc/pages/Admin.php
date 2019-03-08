@@ -20,14 +20,12 @@ final class Admin extends BaseController {
    * Adds new 'Admin' page
    */
   public function add_admin_page() {
-    add_menu_page(
-      'AWeber Multi Subscriber',
+    add_options_page(
+      'AWM Subscriber',
       'AWM Subscriber',
       'manage_options',
-      'awm_subscriber',
-      array($this, 'get_admin_page_template'),
-      'dashicons-admin-tools',
-      100
+      'awm_subscriber_settings',
+      array($this, 'get_admin_page_template')
     );
   }
 
