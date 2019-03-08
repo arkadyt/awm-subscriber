@@ -15,9 +15,11 @@
     },
     "autoload": {
       "psr-4": {
-        "inc\\pages\\": "./inc/pages",
+        "inc\\": "./inc",
         "inc\\base\\": "./inc/base",
-        "inc\\": "./inc"
+        "inc\\core\\": "./inc/core",
+        "inc\\hooks\\": "./inc/hooks",
+        "inc\\pages\\": "./inc/pages"
       }
     }
 }

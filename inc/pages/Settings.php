@@ -5,7 +5,7 @@
 
 namespace inc\pages;
 
-use \inc\base\BaseController;
+use inc\base\BaseController;
 
 final class Settings extends BaseController {
   /**

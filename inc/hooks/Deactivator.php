@@ -3,7 +3,7 @@
  * @package awm-subscriber
  */
 
-namespace inc\base;
+namespace inc\hooks;
 
 final class Deactivator {
   public static function execute() {

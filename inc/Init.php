@@ -12,9 +12,9 @@ final class Init {
    */
   public static function get_services() {
     return array(
+      PluginLinks::class,
       pages\Settings::class,
-      base\SettingsLink::class,
-      base\Subscriber::class
+      core\Subscriber::class
     );
   }
 

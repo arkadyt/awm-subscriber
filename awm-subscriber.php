@@ -42,11 +42,11 @@ if (file_exists(dirname(__FILE__) . '/vendor/autoload.php')) {
 }
 
 function activate_awm_subscriber_plugin() {
-  inc\base\Activator::execute();
+  inc\hooks\Activator::execute();
 }
 
 function deactivate_awm_subscriber_plugin() {
-  inc\base\Deactivator::execute();
+  inc\hooks\Deactivator::execute();
 }
 
 register_activation_hook(__FILE__, 'activate_awm_subscriber_plugin');

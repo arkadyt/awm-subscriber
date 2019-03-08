@@ -17,6 +17,8 @@ class ComposerStaticInitac5cda3d0222a9dc2614b67127d3dde9
         'i' => 
         array (
             'inc\\pages\\' => 10,
+            'inc\\hooks\\' => 10,
+            'inc\\core\\' => 9,
             'inc\\base\\' => 9,
             'inc\\' => 4,
         ),
@@ -37,6 +39,14 @@ class ComposerStaticInitac5cda3d0222a9dc2614b67127d3dde9
         'inc\\pages\\' => 
         array (
             0 => __DIR__ . '/../..' . '/inc/pages',
+        ),
+        'inc\\hooks\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/inc/hooks',
+        ),
+        'inc\\core\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/inc/core',
         ),
         'inc\\base\\' => 
         array (

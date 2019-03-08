@@ -7,6 +7,8 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'inc\\pages\\' => array($baseDir . '/inc/pages'),
+    'inc\\hooks\\' => array($baseDir . '/inc/hooks'),
+    'inc\\core\\' => array($baseDir . '/inc/core'),
     'inc\\base\\' => array($baseDir . '/inc/base'),
     'inc\\' => array($baseDir . '/inc'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),

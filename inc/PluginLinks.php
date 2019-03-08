@@ -3,11 +3,11 @@
  * @package awm-subscriber
  */
 
-namespace inc\base;
+namespace inc;
 
-use \inc\base\BaseController;
+use inc\base\BaseController;
 
-final class SettingsLink extends BaseController {
+final class PluginLinks extends BaseController {
   /**
    * Triggers everything that this class is responsible for.
    * Do not rename the method. inc\Init is expecting to find $this->register() here.

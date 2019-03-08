@@ -11,8 +11,9 @@
  * &custom%20awlist5279237=yes&custom%20awlist5000207=yes&custom%20awlist01290129=yes
  */
 
-namespace inc\base;
+namespace inc\core;
 
+use inc\base\BaseController;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
