@@ -107,32 +107,60 @@ final class Subscriber extends BaseController {
       echo 'Subscribing user...<br/>';
       // printf('<pre>%s</pre>', var_export($aweber_lists, true));
       // send post requests
-
+      $this->test_posting();
     } else {
       echo 'Doing nothing on this page. Checks done: ' . $current_page_slug . ' === ' . $confirm_page_slug;
     }
   }
 
-  public function load_credentials() {
-    return array(
-      'consumer_key' => get_option('awm_subscriber_consumer_key'),
-      'consumer_secret' => get_option('awm_subscriber_consumer_secret'),
-      'token' => get_option('awm_subscriber_access_token'),
-      'token_secret' => get_option('awm_subscriber_token_secret')
-    );
-  }
-
-  public function send_requests() {
+  public function test_posting() {
     $stack = HandlerStack::create();
     $client = new Client([
       'base_uri' => 'https://api.aweber.com/1.0/',
       'handler' => $stack,
       'auth' => 'oauth'
     ]);
+    
+    $app_id = 'dadb3b05';
+    $access_token_url = 'https://auth.aweber.com/1.0/oauth/access_token';
+    $authorize_url = "https://auth.aweber.com/1.0/oauth/authorize_app/$app_id";
+    $api_url = 'https://api.aweber.com/1.0/accounts';
 
-    $credentials = $this->load_credentials();
-    $request_middleware = new Oauth1($this->load_credentials);
-    $stack->push($request_middleware);
+    // if authenticating through app_id remember that you get only one
+    // attempt per $authorization_code. debugging it is painful.
+    $authorization_code = 'AzPHI215Es40C0Eagn2yrZEI|uL4RDPanw8q8i87uPdnMG4rN1i3zF2L68PHdamgL|AqXAQPlVTGg6Y7QLxO1AXf4X|wFOJQlWOXoGXig7lIwuLBURol0hDTj0QwoSc1SV8|osvry8|';
+    $authorization_code_exploded = explode('|', $authorization_code);
+    $auth = new Oauth1([
+      'consumer_key'    => $authorization_code_exploded[0],
+      'consumer_secret' => $authorization_code_exploded[1],
+      'token'           => $authorization_code_exploded[2],
+      'token_secret'    => $authorization_code_exploded[3],
+      'verifier'        => $authorization_code_exploded[4]
+    ]);
+    $stack->push($auth);
+    // $res = $client->post($access_token_url);
+
+    // $res_body = $res->getBody();
+    // echo "RES->BODY: $res_body";
+    // Save the decoded response ($keys) in database along with 
+    // consumer_secret and consumer_key generated in the previous step.
+    $res_body = 'oauth_token_secret=9eAI3hUW5ByMibtJFm6Lt04YLB7dshw175hLAj4M&oauth_token=AgsqKpz3YaErM5z5s40qPrcV';
+    $keys = array();
+    parse_str($res_body, $keys);
+    $stack->remove($auth);
+
+    $auth = new Oauth1(array(
+      'consumer_key'    => $authorization_code_exploded[0],
+      'consumer_secret' => $authorization_code_exploded[1],
+      'token'           => $keys['oauth_token'],
+      'token_secret'    => $keys['oauth_token_secret']
+    ));
+    $stack->push($auth);
+    $res = $client->get('accounts');
+    $res_body = $res->getBody();
+    echo "RES? $res_body";
+    
+    return $auth;
   }
 }
 
