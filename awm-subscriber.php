@@ -29,7 +29,8 @@
  * get_permalink,
  * 'wp' hook
  * 'template_redirect' hook
- *
+ * get_template_page_slug
+ * template_redirect | template_include hooks
  */
 
 defined('ABSPATH') or die('Access denied.');
