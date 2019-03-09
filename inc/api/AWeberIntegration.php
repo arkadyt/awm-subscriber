@@ -117,7 +117,7 @@ final class AWeberIntegration implements Integration {
     $this->stack->remove($request_middleware);
 
     if ($res->getStatusCode() === 200) {
-      return $res->getBody();
+      return json_decode($res->getBody(), true);
     } else {
       return false;
     }
