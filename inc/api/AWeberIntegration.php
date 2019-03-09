@@ -5,19 +5,25 @@
 
 namespace inc\api;
 
+use inc\api\interfaces\Integration;
+
 /**
- * Example usage:
+ * Example usage.
  *
- * $aweber_int = new AWeberIntegration('c7cb7baa');
- * $url_for_user_to_visit = $aweber_int->get_authorize_url();
+ * 1. Spawn the new Integration:
+ *   $aweber_int = new AWeberIntegration('c7cb7baa');
+ *   $url_for_user_to_visit = $aweber_int->get_authorize_url();
  *
- * $response = ... // user visits the url, logs in, gets the response code
- * $aweber_int->initialize($response);
+ * 2. Get the response string and initialize the Integration:
+ *   $response = ... // user visits the url, logs in, gets the response code
+ *   $aweber_int->initialize($response);
  *
- * $aweber_int->get(...);
- * $aweber_int->post(...);
+ * 3. Use it:
+ *   $response = $aweber_int->get(...);
+ *   $response = $aweber_int->post(...);
+ *
  */
-final class AWeberIntegration implements API {
+final class AWeberIntegration implements Integration {
   public const URL_API = 'https://api.aweber.com/1.0';
   public const URL_ACCESS_TOKEN = 'https://auth.aweber.com/1.0/oauth/access_token';
 
@@ -29,6 +35,10 @@ final class AWeberIntegration implements API {
   private $stack, $client;
   private $app_id, $authorize_url;
 
+  /**
+   * Requires AWeber developer app id.
+   * Learn more at https://labs.aweber.com
+   */
   public function __construct($app_id) {
     $this->stack = HandlerStack::create();
     $this->client = new Client([
@@ -41,20 +51,32 @@ final class AWeberIntegration implements API {
     $this->authorize_url = "https://auth.aweber.com/1.0/oauth/authorize_app/$this->app_id";
   }
 
+  /**
+   * Returns the authorization url that Integration users
+   * would visit to get the response code that then will be used
+   * to get the permanent API keys.
+   */
   public function get_authorize_url() {
     return $this->authorize_url;
   }
 
-  public function initialize($response) {
-    $tokens = $this->get_permanent_tokens($this->authorize_url);
+  /**
+   * Initializes the integration.
+   * Gets permanent tokens, saves them to database (overwrites).
+   */
+  public function initialize($response_str) {
+    $tokens = $this->authorize($this->response_str);
     update_option(self::OPTNAME_CONSUMER_KEY, $tokens['consumer_key']);
     update_option(self::OPTNAME_CONSUMER_SECRET, $tokens['consumer_secret']);
     update_option(self::OPTNAME_TOKEN, $tokens['oauth_token']);
     update_option(self::OPTNAME_TOKEN_SECRET, $tokens['oauth_token_secret']);
   }
 
-  private function get_permanent_tokens($authorize_url) {
-    $response_keys = explode('|', $authorize_url);
+  /**
+   * Retrieves permanent API keys from AWeber.
+   */
+  private function authorize($response_str) {
+    $response_keys = explode('|', $response_str);
     $request_middleware = new Oauth1(array(
       'consumer_key'    => $response_keys[0],
       'consumer_secret' => $response_keys[1],
@@ -72,6 +94,9 @@ final class AWeberIntegration implements API {
     return array_merge(array_slice($response_keys, 0, 2), $keys);
   }
 
+  /**
+   * GET action.
+   */
   public function get($path) {
     $request_middleware = new Oauth1(array(
       'consumer_key'    => get_option(self::OPTNAME_CONSUMER_KEY),
@@ -89,4 +114,9 @@ final class AWeberIntegration implements API {
       return false;
     }
   }
+
+  /**
+   * POST action.
+   */
+  public function post($path, $payload) {}
 }
