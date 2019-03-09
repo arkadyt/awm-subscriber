@@ -78,8 +78,12 @@ final class Subscriber extends BaseController {
    * Teaches WP_Query to recognize custom variables from the request url.
    */
   public function add_query_vars_filter($vars) {
+    $vars[] = "unit";
+    $vars[] = "meta_adtracking";
+    $vars[] = "meta_message";
     $vars[] = "email";
     $vars[] = "add_url";
+    $vars[] = "add_notes";
     return $vars;
   }
 
@@ -108,20 +112,15 @@ final class Subscriber extends BaseController {
   public function attempt_to_subscribe() {
     global $wp;
 
-    $current_page_slug = $wp->query_vars['pagename'];
-    $current_page_url = home_url() . $current_page_slug;
-
-    $confirm_page_url = $wp->query_vars['add_url'];
-    $confirm_page_slug = str_replace('/', '', parse_url($confirm_page_url)['path']);
-
-    // Confirmation page has been visited manually.
-    // It does not contain query parms.
-    if (!$wp->query_vars['email']) {
-      return;
-    }
-
-    if ($current_page_slug === $confirm_page_slug) {
-      // full url contains (raw) query parms string
+    // AWeber specific query parameters.
+    if (
+      isset($wp->query_vars['unit']) &&
+      isset($wp->query_vars['meta_adtracking']) &&
+      isset($wp->query_vars['meta_message']) &&
+      isset($wp->query_vars['email']) &&
+      isset($wp->query_vars['add_url']) &&
+      isset($wp->query_vars['add_notes'])
+    ) {
       $current_page_fullurl = home_url(add_query_arg(array($_GET), $wp->request));
       $aweber_lists = $this->extract_awlists_from_url($current_page_fullurl);
       $this->subscribe($wp->query_vars['email'], $aweber_lists);
@@ -138,7 +137,7 @@ final class Subscriber extends BaseController {
         'email' => $subscriberEmail
       );
       $res = $this->aweber_client->post(
-        "accounts/$aweber_customer_id/list/$listId/subscribers",
+        "accounts/$aweber_customer_id/lists/$listId/subscribers",
         $payload
       );
     }
