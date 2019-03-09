@@ -68,11 +68,11 @@ final class AWeberIntegration implements Integration {
    * Gets permanent tokens, saves them to database (overwrites).
    */
   public function initialize($response_str) {
-    $tokens = $this->authorize($this->response_str);
+    $tokens = $this->authorize($response_str);
     update_option(self::OPTNAME_CONSUMER_KEY, $tokens['consumer_key']);
     update_option(self::OPTNAME_CONSUMER_SECRET, $tokens['consumer_secret']);
-    update_option(self::OPTNAME_TOKEN, $tokens['oauth_token']);
-    update_option(self::OPTNAME_TOKEN_SECRET, $tokens['oauth_token_secret']);
+    update_option(self::OPTNAME_TOKEN, $tokens['token']);
+    update_option(self::OPTNAME_TOKEN_SECRET, $tokens['token_secret']);
   }
 
   /**
@@ -91,10 +91,15 @@ final class AWeberIntegration implements Integration {
     $response = $this->client->post(self::URL_ACCESS_TOKEN);
 
     $keys = array();
-    parse_str($response->getBody, $keys);
+    parse_str($response->getBody(), $keys);
 
-    $stack->remove($request_middleware);
-    return array_merge(array_slice($response_keys, 0, 2), $keys);
+    $this->stack->remove($request_middleware);
+    return array(
+      'consumer_key'    => $response_keys[0],
+      'consumer_secret' => $response_keys[1],
+      'token'           => $keys['oauth_token'],
+      'token_secret'    => $keys['oauth_token_secret']
+    );
   }
 
   /**
@@ -107,9 +112,9 @@ final class AWeberIntegration implements Integration {
       'token'           => get_option(self::OPTNAME_TOKEN),
       'token_secret'    => get_option(self::OPTNAME_TOKEN_SECRET)
     ));
-    $stack->push($request_middleware);
-    $res = $client->get(self::URL_API . '/' . $path);
-    $stack->remove($request_middleware);
+    $this->stack->push($request_middleware);
+    $res = $this->client->get(self::URL_API . '/' . $path);
+    $this->stack->remove($request_middleware);
 
     if ($res->getStatusCode() === 200) {
       return $res->getBody();
