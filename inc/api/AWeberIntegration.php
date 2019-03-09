@@ -126,5 +126,21 @@ final class AWeberIntegration implements Integration {
   /**
    * POST action.
    */
-  public function post($path, $payload) {}
+  public function post($path, $payload) {
+    $request_middleware = new Oauth1(array(
+      'consumer_key'    => get_option(self::OPTNAME_CONSUMER_KEY),
+      'consumer_secret' => get_option(self::OPTNAME_CONSUMER_SECRET),
+      'token'           => get_option(self::OPTNAME_TOKEN),
+      'token_secret'    => get_option(self::OPTNAME_TOKEN_SECRET)
+    ));
+    $this->stack->push($request_middleware);
+    $res = $this->client->post(self::URL_API . '/' . $path, $payload);
+    $this->stack->remove($request_middleware);
+
+    if ($res->getStatusCode() === 200) {
+      return json_decode($res->getBody(), true);
+    } else {
+      return false;
+    }
+  }
 }
