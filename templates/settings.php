@@ -53,10 +53,12 @@
       <?php do_settings_sections('awm_subscriber_settings'); ?>
 
       <h2>Plugin was successfully authorized!</h2>
-      <p>If you have any problems with the plugin you may try to <b>reauthorize it</b> by clicking the button below:</p>
+      <p>
+        If you have any problems with the plugin you may try to <b>reauthorize it</b> by clicking the <b>Remove authorization</b> button below.<br/>
+        If that does not help, try reactivating the plugin through <b>Sidebar > Plugins > Installed plugins</b> page or reinstalling it.
+      </p>
       <input type="hidden" name="<?php echo $awm_sub_sett_optname_rcode ?>" value="" />
-      <input type="submit" class="button-primary" value="Remove authorization" />
-      <p>If that does not help, try reactivating the plugin through <b>Sidebar > Plugins > Installed plugins</b> page or reinstalling it.</p>
+      <?php submit_button('Remove authorization'); ?>
     </form>
 
     <h1>How this plugin works:</h1>
