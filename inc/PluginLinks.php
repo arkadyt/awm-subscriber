@@ -17,10 +17,14 @@ final class PluginLinks extends BaseController {
   }
 
   /**
-   * Inserts 'Settings' link at the 'Installed plugins' page for this plugin.
+   * Inserts 'Settings' link in the plugin row at the 'Installed plugins' page.
    */
   public function inject_settings_link($links) {
-    $settings_link = '<a href="' . site_url() . '/wp-admin/admin.php?page=awm_subscriber">Settings</a>';
+    $settings_link = '<a href="' 
+      . site_url() 
+      . '/wp-admin/options-general.php?page=' 
+      . $this->groupname_plugin_settings 
+      . '">Settings</a>';
     array_push($links, $settings_link);
     return $links;
   }
