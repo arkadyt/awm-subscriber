@@ -3,7 +3,7 @@
  * @package awm-subscriber
  */
 
-namespace inc\api;
+namespace inc\api\interfaces;
 
 interface Integration {
   public function get_authorize_url();

@@ -6,6 +6,9 @@
 namespace inc\api;
 
 use inc\api\interfaces\Integration;
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Subscriber\Oauth\Oauth1;
 
 /**
  * Example usage.

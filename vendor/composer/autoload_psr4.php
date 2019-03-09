@@ -10,6 +10,8 @@ return array(
     'inc\\hooks\\' => array($baseDir . '/inc/hooks'),
     'inc\\core\\' => array($baseDir . '/inc/core'),
     'inc\\base\\' => array($baseDir . '/inc/base'),
+    'inc\\api\\interfaces\\' => array($baseDir . '/inc/api/interfaces'),
+    'inc\\api\\' => array($baseDir . '/inc/api'),
     'inc\\' => array($baseDir . '/inc'),
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
     'GuzzleHttp\\Subscriber\\Oauth\\' => array($vendorDir . '/guzzlehttp/oauth-subscriber/src'),
