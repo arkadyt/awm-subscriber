@@ -43,10 +43,15 @@ final class AWeberIntegration implements Integration {
    * Learn more at https://labs.aweber.com
    */
   public function __construct($app_id) {
+    $headers = array(
+      'Content-Type'    => 'application/json',
+      'Accept'          => 'application/json'
+    );
     $this->stack = HandlerStack::create();
     $this->client = new Client([
       'base_uri' => self::URL_API,
       'handler' => $this->stack,
+      'headers' => $headers,
       'auth' => 'oauth'
     ]);
 
@@ -134,7 +139,7 @@ final class AWeberIntegration implements Integration {
       'token_secret'    => get_option(self::OPTNAME_TOKEN_SECRET)
     ));
     $this->stack->push($request_middleware);
-    $res = $this->client->post(self::URL_API . '/' . $path, $payload);
+    $res = $this->client->post(self::URL_API . '/' . $path, array( 'json' => $payload ));
     $this->stack->remove($request_middleware);
 
     if ($res->getStatusCode() === 200) {
