@@ -65,7 +65,7 @@ final class Subscriber extends BaseController {
   public function __construct() {
     parent::__construct();
 
-    $this->aweber_client = new AWeberIntegration($this->app_id);
+    $this->aweber_client = new AWeberIntegration($this->aweber_dev_app_id);
     $this->authorize_url = $this->aweber_client->get_authorize_url();
   }
 

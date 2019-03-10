@@ -61,7 +61,7 @@ final class Settings extends BaseController {
   public function register_settings() {
     register_setting(
       $this->groupname_plugin_settings,
-      $this->optname_response_code
+      $this->optname_aweber_response_code
     );
   }
 }

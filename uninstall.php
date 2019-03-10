@@ -27,16 +27,16 @@ use inc\base\BaseController;
 
 final class Uninstall extends BaseController {
   public function uninstall() {
-    delete_option($this->optname_response_code);
-    delete_option($this->optname_consumer_key);
-    delete_option($this->optname_consumer_secret);
-    delete_option($this->optname_token);
-    delete_option($this->optname_token_secret);
+    delete_option($this->optname_aweber_response_code);
+    delete_option($this->optname_aweber_consumer_key);
+    delete_option($this->optname_aweber_consumer_secret);
+    delete_option($this->optname_aweber_token);
+    delete_option($this->optname_aweber_token_secret);
     delete_option($this->optname_aweber_customer_id);
 
     unregister_setting(
       $this->groupname_plugin_settings,
-      $this->optname_response_code
+      $this->optname_aweber_response_code
     );
   }
 }

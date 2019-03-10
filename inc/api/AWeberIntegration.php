@@ -93,10 +93,10 @@ final class AWeberIntegration extends BaseController implements Integration {
     $tokens = $this->authorize($response_str);
     if (!$tokens) return false;
 
-    update_option($this->optname_consumer_key, $tokens['consumer_key']);
-    update_option($this->optname_consumer_secret, $tokens['consumer_secret']);
-    update_option($this->optname_token, $tokens['token']);
-    update_option($this->optname_token_secret, $tokens['token_secret']);
+    update_option($this->optname_aweber_consumer_key, $tokens['consumer_key']);
+    update_option($this->optname_aweber_consumer_secret, $tokens['consumer_secret']);
+    update_option($this->optname_aweber_token, $tokens['token']);
+    update_option($this->optname_aweber_token_secret, $tokens['token_secret']);
     return true;
   }
 
@@ -136,10 +136,10 @@ final class AWeberIntegration extends BaseController implements Integration {
    */
   public function get($path) {
     $request_middleware = new Oauth1(array(
-      'consumer_key'    => get_option($this->optname_consumer_key),
-      'consumer_secret' => get_option($this->optname_consumer_secret),
-      'token'           => get_option($this->optname_token),
-      'token_secret'    => get_option($this->optname_token_secret)
+      'consumer_key'    => get_option($this->optname_aweber_consumer_key),
+      'consumer_secret' => get_option($this->optname_aweber_consumer_secret),
+      'token'           => get_option($this->optname_aweber_token),
+      'token_secret'    => get_option($this->optname_aweber_token_secret)
     ));
     $this->stack->push($request_middleware);
     try {
@@ -157,10 +157,10 @@ final class AWeberIntegration extends BaseController implements Integration {
    */
   public function post($path, $payload) {
     $request_middleware = new Oauth1(array(
-      'consumer_key'    => get_option($this->optname_consumer_key),
-      'consumer_secret' => get_option($this->optname_consumer_secret),
-      'token'           => get_option($this->optname_token),
-      'token_secret'    => get_option($this->optname_token_secret)
+      'consumer_key'    => get_option($this->optname_aweber_consumer_key),
+      'consumer_secret' => get_option($this->optname_aweber_consumer_secret),
+      'token'           => get_option($this->optname_aweber_token),
+      'token_secret'    => get_option($this->optname_aweber_token_secret)
     ));
     $this->stack->push($request_middleware);
     try {
