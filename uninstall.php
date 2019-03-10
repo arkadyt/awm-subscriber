@@ -21,7 +21,10 @@
  * along with this program.  If not, see https://www.gnu.org/licenses/gpl-3.0.html.
  */
 
-defined('WP_UNINSTALL_PLUGIN') or die('Access denied.');
+// Make sure this is a legitimate uninstall request
+if(!defined('ABSPATH') or !defined('WP_UNINSTALL_PLUGIN') or !current_user_can('delete_plugins')) {
+    exit();
+}
 
 use inc\base\BaseController;
 
