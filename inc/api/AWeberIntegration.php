@@ -24,6 +24,8 @@
 namespace inc\api;
 
 use inc\api\interfaces\Integration;
+use inc\base\BaseController;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
@@ -44,14 +46,9 @@ use GuzzleHttp\Subscriber\Oauth\Oauth1;
  *   $response = $aweber_int->post(...);
  *
  */
-final class AWeberIntegration implements Integration {
+final class AWeberIntegration extends BaseController implements Integration {
   public const URL_API = 'https://api.aweber.com/1.0';
   public const URL_ACCESS_TOKEN = 'https://auth.aweber.com/1.0/oauth/access_token';
-
-  private const OPTNAME_CONSUMER_KEY = 'awm_subscriber_consumer_key';
-  private const OPTNAME_CONSUMER_SECRET = 'awm_subscriber_consumer_secret';
-  private const OPTNAME_TOKEN = 'awm_subscriber_token';
-  private const OPTNAME_TOKEN_SECRET = 'awm_subscriber_token_secret';
 
   private $stack, $client;
   private $app_id, $authorize_url;
@@ -61,6 +58,8 @@ final class AWeberIntegration implements Integration {
    * Learn more at https://labs.aweber.com
    */
   public function __construct($app_id) {
+    parent::__construct();
+
     $headers = array(
       'Content-Type'    => 'application/json',
       'Accept'          => 'application/json'
@@ -94,10 +93,10 @@ final class AWeberIntegration implements Integration {
     $tokens = $this->authorize($response_str);
     if (!$tokens) return false;
 
-    update_option(self::OPTNAME_CONSUMER_KEY, $tokens['consumer_key']);
-    update_option(self::OPTNAME_CONSUMER_SECRET, $tokens['consumer_secret']);
-    update_option(self::OPTNAME_TOKEN, $tokens['token']);
-    update_option(self::OPTNAME_TOKEN_SECRET, $tokens['token_secret']);
+    update_option($this->optname_consumer_key, $tokens['consumer_key']);
+    update_option($this->optname_consumer_secret, $tokens['consumer_secret']);
+    update_option($this->optname_token, $tokens['token']);
+    update_option($this->optname_token_secret, $tokens['token_secret']);
     return true;
   }
 
@@ -137,10 +136,10 @@ final class AWeberIntegration implements Integration {
    */
   public function get($path) {
     $request_middleware = new Oauth1(array(
-      'consumer_key'    => get_option(self::OPTNAME_CONSUMER_KEY),
-      'consumer_secret' => get_option(self::OPTNAME_CONSUMER_SECRET),
-      'token'           => get_option(self::OPTNAME_TOKEN),
-      'token_secret'    => get_option(self::OPTNAME_TOKEN_SECRET)
+      'consumer_key'    => get_option($this->optname_consumer_key),
+      'consumer_secret' => get_option($this->optname_consumer_secret),
+      'token'           => get_option($this->optname_token),
+      'token_secret'    => get_option($this->optname_token_secret)
     ));
     $this->stack->push($request_middleware);
     try {
@@ -158,10 +157,10 @@ final class AWeberIntegration implements Integration {
    */
   public function post($path, $payload) {
     $request_middleware = new Oauth1(array(
-      'consumer_key'    => get_option(self::OPTNAME_CONSUMER_KEY),
-      'consumer_secret' => get_option(self::OPTNAME_CONSUMER_SECRET),
-      'token'           => get_option(self::OPTNAME_TOKEN),
-      'token_secret'    => get_option(self::OPTNAME_TOKEN_SECRET)
+      'consumer_key'    => get_option($this->optname_consumer_key),
+      'consumer_secret' => get_option($this->optname_consumer_secret),
+      'token'           => get_option($this->optname_token),
+      'token_secret'    => get_option($this->optname_token_secret)
     ));
     $this->stack->push($request_middleware);
     try {

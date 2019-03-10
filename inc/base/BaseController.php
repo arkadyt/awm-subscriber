@@ -30,16 +30,26 @@ class BaseController {
 
   protected $groupname_plugin_settings;
   protected $optname_response_code;
+  protected $optname_consumer_key;
+  protected $optname_consumer_secret;
+  protected $optname_token;
+  protected $optname_token_secret;
+  protected $optname_aweber_customer_id;
 
   protected $app_id;
 
   public function __construct() {
-    $this->plugin_root = plugin_dir_path(dirname(__FILE__, 2));
-    $this->plugin_url = plugin_dir_url(dirname(__FILE__, 2));
-    $this->plugin_basename = plugin_basename(dirname(__FILE__, 3)) . '/awm-subscriber.php';
+    $this->plugin_root          = plugin_dir_path(dirname(__FILE__, 2));
+    $this->plugin_url           = plugin_dir_url(dirname(__FILE__, 2));
+    $this->plugin_basename      = plugin_basename(dirname(__FILE__, 3)) . '/awm-subscriber.php';
 
-    $this->groupname_plugin_settings = 'awm_subscriber_settings';
-    $this->optname_response_code = 'awm_subscriber_response_code';
+    $this->groupname_plugin_settings    = 'awm_subscriber_settings';
+    $this->optname_response_code        = 'awm_subscriber_response_code';
+    $this->optname_consumer_key         = 'awm_subscriber_consumer_key';
+    $this->optname_consumer_secret      = 'awm_subscriber_consumer_secret';
+    $this->optname_token                = 'awm_subscriber_token';
+    $this->optname_token_secret         = 'awm_subscriber_token_secret';
+    $this->optname_aweber_customer_id   = 'awm_subscriber_customer_id';
 
     $this->app_id = 'dadb3b05';
   }

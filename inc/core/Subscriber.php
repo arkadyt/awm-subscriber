@@ -22,11 +22,29 @@
  */
 
 /**
- * example AWeber request url (all joined):
+ * Example of AWeber subscription confirmation URL (all joined):
  *
- * ?email=wp-testing%40arkadyt.com&from=wp-testing%40arkadyt.com&meta_adtracking=my%20web%20form&meta_message=1001
- * &name=Thug&unit=awlist5279237&add_url=http%3A%2F%2Fwp-testing.arkadyt.com%2Fthank-you%2F&add_notes=255.255.255.255
- * &custom%20awlist5279237=yes&custom%20awlist5000207=yes&custom%20awlist01290129=yes
+ * ?email=subdomain%40domain.com
+ * &from=subdomain%40domain.com
+ * &meta_adtracking=my%20web%20form
+ * &meta_message=1001
+ * &name=Bob
+ * &unit=awlist5279237
+ * &add_url=http%3A%2F%2Fsubdomain.domain.com%2F
+ * &add_notes=255.255.255.255
+ * &custom%20awlist5279237=yes
+ * &custom%20awlist5000207=yes
+ * &custom%20awlist01290129=yes
+ *
+ * add_url is not a reliable way of detecting if somebody
+ * requested the confirmation page.
+ * -> AWeber's unique combination of query parms is used.
+ *
+ * if confirmation page URL supplied to AWeber already
+ * contained some parameters, AWeber would just append his own
+ * parameters to the end.
+ * If some parm names were already used, AWeber would not care,
+ * it would just add everything on top.
  */
 
 namespace inc\core;
@@ -38,10 +56,7 @@ use inc\base\BaseController;
  * Core service of this plugin.
  */
 final class Subscriber extends BaseController {
-  private const OPTNAME_AWEBER_CUSTOMER_ID = 'awm_subscriber_customer_id';
-
   public $authorize_url;
-
   private $aweber_client;
 
   /**
@@ -49,6 +64,7 @@ final class Subscriber extends BaseController {
    */
   public function __construct() {
     parent::__construct();
+
     $this->aweber_client = new AWeberIntegration($this->app_id);
     $this->authorize_url = $this->aweber_client->get_authorize_url();
   }
@@ -66,7 +82,7 @@ final class Subscriber extends BaseController {
     // That means that every user of this plugin would have to use
     // a separate developer app.
     $id = $this->aweber_client->get('accounts')['entries'][0]['id'];
-    update_option(self::OPTNAME_AWEBER_CUSTOMER_ID, $id);
+    update_option($this->optname_aweber_customer_id, $id);
     return $result;
   } 
 
@@ -151,7 +167,7 @@ final class Subscriber extends BaseController {
    * Subscribes user to multiple AWeber lists of his choice.
    */
   public function subscribe($subscriberEmail, $aweber_lists) {
-    $aweber_customer_id = get_option(self::OPTNAME_AWEBER_CUSTOMER_ID);
+    $aweber_customer_id = get_option($this->optname_aweber_customer_id);
     foreach ($aweber_lists as $listId) {
       $payload = array(
         'email' => $subscriberEmail
