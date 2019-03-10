@@ -58,29 +58,46 @@ $awm_sub_sett_is_initialized = $awm_sub_sett_response_code === 'initialized';
 
       <h2>Step 3</h2>
       <p style="margin-left: 10px;">Finish configuration by clicking the button below:</p>
-      <?php submit_button(); ?>
+      <?php submit_button('Authorize plugin'); ?>
     </form>
   <?php else: ?>
     <?php 
       if (!$awm_sub_sett_is_initialized) { 
-        $result = $awm_sub_sett_subs_instance->initialize($awm_sub_sett_response_code);
-        if ($result) {
+        $awm_sub_init_result = $awm_sub_sett_subs_instance->initialize($awm_sub_sett_response_code);
+        if ($awm_sub_init_result) {
           update_option($awm_sub_sett_optname_rcode, "initialized");
+        } else {
+          update_option($awm_sub_sett_optname_rcode, "");
         }
       } 
     ?>
-    <form method="post" action="options.php">
-      <?php settings_fields('awm_subscriber_settings'); ?>
-      <?php do_settings_sections('awm_subscriber_settings'); ?>
 
-      <h2>Plugin was successfully authorized!</h2>
-      <p>
-        If you have any problems with the plugin you may try to <b>reauthorize it</b> by clicking the <b>Remove authorization</b> button below.<br/>
-        If that does not help, try reactivating the plugin through <b>Sidebar > Plugins > Installed plugins</b> page or reinstalling it.
-      </p>
-      <input type="hidden" name="<?php echo $awm_sub_sett_optname_rcode ?>" value="" />
-      <?php submit_button('Remove authorization'); ?>
-    </form>
+    <?php if ($awm_sub_init_result): ?>
+      <form method="post" action="options.php">
+        <?php settings_fields('awm_subscriber_settings'); ?>
+        <?php do_settings_sections('awm_subscriber_settings'); ?>
+
+        <h2>Plugin was successfully authorized!</h2>
+        <p>
+          If you have any problems with the plugin you may try to <b>reauthorize it</b> by clicking the <b>Remove authorization</b> button below.<br/>
+          If that does not help, try reactivating the plugin through <b>Sidebar > Plugins > Installed plugins</b> page or reinstalling it.
+        </p>
+        <input type="hidden" name="<?php echo $awm_sub_sett_optname_rcode ?>" value="" />
+        <?php submit_button('Remove authorization'); ?>
+      </form>
+    <?php else: ?>
+      <form method="post" action="options.php">
+        <?php settings_fields('awm_subscriber_settings'); ?>
+        <?php do_settings_sections('awm_subscriber_settings'); ?>
+
+        <h2>Something went wrong!</h2>
+        <p>
+          Please make sure that you copy pasted the code correctly. DO NOT modify it or alter in any way.<br/>
+          Click on a button below to try again:
+        </p>
+        <?php submit_button('Try again'); ?>
+      </form>
+    <?php endif; ?>
   <?php endif; ?>
 
   <h1>How this plugin works:</h1>
