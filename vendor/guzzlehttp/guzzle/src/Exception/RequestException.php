@@ -136,10 +136,10 @@ class RequestException extends TransferException
             return null;
         }
 
-        $summary = $body->read(999);
+        $summary = $body->read(120);
         $body->rewind();
 
-        if ($size > 999) {
+        if ($size > 120) {
             $summary .= ' (truncated...)';
         }
 
