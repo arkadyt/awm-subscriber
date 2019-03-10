@@ -41,13 +41,15 @@ final class Subscriber extends BaseController {
    * the response code supplied by user upon plugin authorization.
    */
   public function initialize($response_code) {
-    $this->aweber_client->initialize($response_code);
+    $result = $this->aweber_client->initialize($response_code);
+    if ($result === false) return $result;
 
     // AWeber does not provide a way to get the current user.
     // That means that every user of this plugin would have to use
     // a separate developer app.
     $id = $this->aweber_client->get('accounts')['entries'][0]['id'];
     update_option(self::OPTNAME_AWEBER_CUSTOMER_ID, $id);
+    return $result;
   } 
 
   /**

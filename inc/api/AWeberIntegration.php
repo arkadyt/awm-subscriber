@@ -74,12 +74,13 @@ final class AWeberIntegration implements Integration {
    */
   public function initialize($response_str) {
     $tokens = $this->authorize($response_str);
-    if (!$tokens) return;
+    if (!$tokens) return false;
 
     update_option(self::OPTNAME_CONSUMER_KEY, $tokens['consumer_key']);
     update_option(self::OPTNAME_CONSUMER_SECRET, $tokens['consumer_secret']);
     update_option(self::OPTNAME_TOKEN, $tokens['token']);
     update_option(self::OPTNAME_TOKEN_SECRET, $tokens['token_secret']);
+    return true;
   }
 
   /**

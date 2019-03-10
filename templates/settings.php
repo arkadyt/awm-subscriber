@@ -44,8 +44,10 @@
   <?php else: ?>
     <?php 
       if (!$awm_sub_sett_is_initialized) { 
-        $awm_sub_sett_subs_instance->initialize($awm_sub_sett_response_code);
-        update_option($awm_sub_sett_optname_rcode, "initialized");
+        $result = $awm_sub_sett_subs_instance->initialize($awm_sub_sett_response_code);
+        if ($result) {
+          update_option($awm_sub_sett_optname_rcode, "initialized");
+        }
       } 
     ?>
     <form method="post" action="options.php">
