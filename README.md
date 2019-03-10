@@ -1,4 +1,4 @@
-  <h1>How this plugin works:</h1>
+  <h1>How this plugin works</h1>
   <h2>1. Visitor subscribes to your main AWeber list.</h2>
   <p>
     Bob comes to your website, decides he'd like to receive news from you in his email inbox.<br/>
@@ -23,7 +23,6 @@
   <p>
     Good news! You still manage everything related to email campaigns at AWeber website.<br/>
     This plugin does not require any additional configuration on the Wordpress side.<br/><br/>
-
     There are only two rules you have to follow at AWeber in order to enable automatic subscriptions:</br>
   </p>
   <h2>1. Make sure you use proper 'Field Names' for your custom fields on your AWeber form.</h2>
@@ -31,10 +30,8 @@
     When you create a custom field for your AWeber form (<b>List Options > Custom Fields</b>),<br/>
     it first asks you which '<b>Field Name</b>' you want to use, then on the next slide,<br/>
     it asks for 'Field Label' and some other options that are not relevant for the plugin.<br/><br/>
-
     Make sure that for every new field you create, you set the '<b>Field Name</b>' value to<br/>
     the '<b>ID</b>' of the corresponding AWeber list (like <b>awlist5279237</b>).<br/><br/>
-
     Automatic subscriptions are not possible without an association system like this.<br/>
     You can get a list ID at <b>List Options > List Settings > (look under the list name)</b> 
   </p>
@@ -44,7 +41,7 @@
     You can set this setting in <b>List Options > List Settings > Confirmation Message > Confirmation Success Page</b>.<br/><br/>
     Redirection to your website is important because <b>that's where this plugin does it's job</b>, on your website.</br>
     I recommend setting up a separate page for that. It doesn't have to be nothing fancy, but just being a <b>separate</b> page.
-  </p>
+  </p><br/>
 
 # License
 ```
