@@ -87,7 +87,7 @@
 
       There are only two rules you have to follow at AWeber in order to enable automatic subscriptions:</br>
     </p>
-    <h2>1. Make sure you use proper names for custom 'Checkbox' fields.</h2>
+    <h2>1. Make sure you use proper 'Field Names' for your custom fields on your AWeber form.</h2>
     <p>
       When you create a custom field for your AWeber form, it first asks you which '<b>Field Name</b>' you want to use,<br/>
       Then on the next slide for 'Field Label', 'Field Type' and 'Tags'.<br/><br/>

@@ -5,34 +5,12 @@
 
 /**
  * Plugin Name: AWM Subscriber
- * Description: Plugin subscribes a user to multiple AWeber lists once he subscribes to a single list of your choice and confirms the subscription. Learn more on the Settings page.
- * Version:     0.0.0
+ * Description: Plugin subscribes a visitor to multiple AWeber lists once he subscribes to a AWeber list of your choice and confirms the subscription. Learn more on the Settings page.
+ * Version:     0.9.1-alpha
  * Author:      Arkady Titenko
  * Author URI:  http://arkadyt.com
- * License:     GPL2
- * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- */
-
-/* X Works only on /thank-you/ page, which is configured.
- * -> make it simpler, provide generated route.
- *
- * - AWeber API key
- *
- * read GET url properties
- * send AWeber requests
- *
- * KEYWORDS:
- * wp_query, 
- * the loop,
- * is_page, 
- * get_query_url,
- * get_permalink,
- * 'wp' hook
- * 'template_redirect' hook
- * get_template_page_slug
- * template_redirect | template_include hooks
- * locate_template
- * wp_redirect (works only on early stage hooks, before headers are sent)
+ * License:     GPLv3
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  */
 
 defined('ABSPATH') or die('Access denied.');
