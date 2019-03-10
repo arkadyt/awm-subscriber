@@ -74,6 +74,8 @@ final class AWeberIntegration implements Integration {
    */
   public function initialize($response_str) {
     $tokens = $this->authorize($response_str);
+    if (!$tokens) return;
+
     update_option(self::OPTNAME_CONSUMER_KEY, $tokens['consumer_key']);
     update_option(self::OPTNAME_CONSUMER_SECRET, $tokens['consumer_secret']);
     update_option(self::OPTNAME_TOKEN, $tokens['token']);
@@ -93,18 +95,22 @@ final class AWeberIntegration implements Integration {
       'verifier'        => $response_keys[4]
     ));
     $this->stack->push($request_middleware);
-    $response = $this->client->post(self::URL_ACCESS_TOKEN);
+    try {
+      $response = $this->client->post(self::URL_ACCESS_TOKEN);
+      $keys = array();
+      parse_str($response->getBody(), $keys);
 
-    $keys = array();
-    parse_str($response->getBody(), $keys);
-
-    $this->stack->remove($request_middleware);
-    return array(
-      'consumer_key'    => $response_keys[0],
-      'consumer_secret' => $response_keys[1],
-      'token'           => $keys['oauth_token'],
-      'token_secret'    => $keys['oauth_token_secret']
-    );
+      return array(
+        'consumer_key'    => $response_keys[0],
+        'consumer_secret' => $response_keys[1],
+        'token'           => $keys['oauth_token'],
+        'token_secret'    => $keys['oauth_token_secret']
+      );
+    } catch (\Exception $e) {
+      return false;
+    } finally {
+      $this->stack->remove($request_middleware);
+    }
   }
 
   /**
@@ -118,13 +124,13 @@ final class AWeberIntegration implements Integration {
       'token_secret'    => get_option(self::OPTNAME_TOKEN_SECRET)
     ));
     $this->stack->push($request_middleware);
-    $res = $this->client->get(self::URL_API . '/' . $path);
-    $this->stack->remove($request_middleware);
-
-    if ($res->getStatusCode() === 200) {
+    try {
+      $res = $this->client->get(self::URL_API . '/' . $path);
       return json_decode($res->getBody(), true);
-    } else {
+    } catch (\Exception $e) {
       return false;
+    } finally {
+      $this->stack->remove($request_middleware);
     }
   }
 
@@ -139,13 +145,13 @@ final class AWeberIntegration implements Integration {
       'token_secret'    => get_option(self::OPTNAME_TOKEN_SECRET)
     ));
     $this->stack->push($request_middleware);
-    $res = $this->client->post(self::URL_API . '/' . $path, array( 'json' => $payload ));
-    $this->stack->remove($request_middleware);
-
-    if ($res->getStatusCode() === 200) {
+    try {
+      $res = $this->client->post(self::URL_API . '/' . $path, array( 'json' => $payload ));
       return json_decode($res->getBody(), true);
-    } else {
+    } catch (\Exception $e) {
       return false;
+    } finally {
+      $this->stack->remove($request_middleware);
     }
   }
 }
