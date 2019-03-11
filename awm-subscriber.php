@@ -6,7 +6,7 @@
 /**
  * Plugin Name: AWM Subscriber
  * Description: Plugin subscribes a visitor to multiple AWeber lists once he subscribes to a AWeber list of your choice and confirms the subscription. Learn more on the Settings page.
- * Version:     1.0.0-beta
+ * Version:     1.0.2
  * Author:      Andrew Titenko
  * Author URI:  http://arkadyt.com
  * License:     GPLv3
