@@ -149,18 +149,18 @@ $__awmss = new SettingsTemplate();
   </p>
   <h2>3. Visitor receives additional confirmation emails.</h2>
   <p style="margin-left: 10px;">
-    Bob receives additional confirmation emails from every list he decided to subscribe to <b>additionally.</b></br></br>
-    Please keep in mind: AWeber does not allow subscribing users to mailing lists without their permission.</br>
-    As they say, "That's done to prevent malicious subscriptions and false spam allegations".</br></br>
-    In the end, though, you don't have to create the whole myriad of forms and user doesn't have to fill them all out!</br>
+    Bob receives additional confirmation emails from every list he decided to subscribe to <b>additionally.</b><br/><br/>
+    Please keep in mind: AWeber does not allow subscribing users to mailing lists without their permission.<br/>
+    As they say, "That's done to prevent malicious subscriptions and false spam allegations".<br/><br/>
+    In the end, though, you don't have to create the whole myriad of forms and user doesn't have to fill them all out!<br/>
     User would just need to spend 10-30 seconds on confirming the additional subscriptions in his email inbox!
-  </p></br>
+  </p><br/>
 
   <h1>Here's what's required from you:</h1>
   <p>
     Good news! You still manage everything related to email campaigns at AWeber website.<br/>
     This plugin does not require any additional configuration on the Wordpress side.<br/><br/>
-    There are only two rules you have to follow at AWeber in order to enable automatic subscriptions:</br>
+    There are only two rules you have to follow at AWeber in order to enable automatic subscriptions:<br/>
   </p>
   <h2>1. Make sure you use proper 'Field Names' for your custom fields on your AWeber form.</h2>
   <p style="margin-left: 10px;">
@@ -176,7 +176,7 @@ $__awmss = new SettingsTemplate();
   <p style="margin-left: 10px;">
     By saying main list, I mean list that your AWeber form on your website is bound to.<br/>
     You can set this setting in <b>List Options > List Settings > Confirmation Message > Confirmation Success Page</b>.<br/><br/>
-    Redirection to your website is important because <b>that's where this plugin does it's job</b>, on your website.</br>
+    Redirection to your website is important because <b>that's where this plugin does it's job</b>, on your website.<br/>
     I recommend setting up a separate page for that. It doesn't have to be nothing fancy, but just being a <b>separate</b> page.
   </p><br/>
 </div>
