@@ -105,7 +105,7 @@ final class Subscriber extends BaseController {
    */
   public function intercept_get_request() {
     if (isset($_GET['name'])) {
-      $_GET['subscriberName'] = $_GET['name'];
+      $_GET['subscriber_name'] = $_GET['name'];
       unset($_GET['name']);
     }
   }
@@ -120,6 +120,7 @@ final class Subscriber extends BaseController {
     $vars[] = "email";
     $vars[] = "add_url";
     $vars[] = "add_notes";
+    $vars[] = "subscriber_name";
     return $vars;
   }
 
@@ -159,19 +160,19 @@ final class Subscriber extends BaseController {
     ) {
       $current_page_fullurl = home_url(add_query_arg(array($_GET), $wp->request));
       $aweber_lists = $this->extract_awlists_from_url($current_page_fullurl);
-      $this->subscribe($wp->query_vars['email'], $aweber_lists);
+      $this->subscribe($aweber_lists, array(
+        'email' => $wp->query_vars['email'],
+        'name'  => $wp->query_vars['subscriber_name']
+      ));
     }
   }
 
   /**
    * Subscribes user to multiple AWeber lists of his choice.
    */
-  public function subscribe($subscriberEmail, $aweber_lists) {
+  public function subscribe($aweber_lists, $payload) {
     $aweber_customer_id = get_option($this->optname_aweber_customer_id);
     foreach ($aweber_lists as $listId) {
-      $payload = array(
-        'email' => $subscriberEmail
-      );
       $res = $this->aweber_client->post(
         "accounts/$aweber_customer_id/lists/$listId/subscribers",
         $payload
